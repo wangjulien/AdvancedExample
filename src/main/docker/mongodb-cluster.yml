@@ -1,0 +1,16 @@
+version: '2'
+services:
+  advancedexample-mongodb:
+    image: mongo:4.0.13
+    ports:
+      - '27017:27017'
+    command: mongos --configdb advancedexample-mongodb-config
+  advancedexample-mongodb-node:
+    build:
+      context: .
+      dockerfile: mongodb/MongoDB.Dockerfile
+    command: mongod --replSet rs1 --noprealloc --smallfiles
+  advancedexample-mongodb-config:
+    image: mongo:4.0.13
+    container_name: advancedexample-mongodb-config
+    command: mongod --noprealloc --smallfiles --configsvr --dbpath /data/db
